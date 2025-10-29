@@ -182,8 +182,16 @@ export default function ROP1CalculatorCloneFixed() {
     if (!w) alert('Popup bloccato: consenti pop-up per generare il PDF.');
   };
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div style={{ minHeight: "100dvh", background: "linear-gradient(135deg,#fafafa,#fff,#f4f4f5)", padding: 24 }}>
+    <div style={{ minHeight: "100dvh", background: "linear-gradient(135deg,#fafafa,#fff,#f4f4f5)", padding: isMobile ? 16 : 24 }}>
       <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gap: 16 }}>
         {/* Header */}
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "space-between", alignItems: "center" }}>
@@ -200,7 +208,7 @@ export default function ROP1CalculatorCloneFixed() {
         </div>
 
         {/* Body */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 360px", gap: 16 }}>
           {/* Inputs card */}
           <div style={ui.card.base}>
             <div style={ui.card.title}>Inputs</div>
@@ -235,7 +243,7 @@ export default function ROP1CalculatorCloneFixed() {
         {/* Sign card */}
         <div style={{ ...ui.card.base }}>
           <div style={ui.card.title}>Firma / Validazione</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12 }}>
             <div>
               <div style={ui.label}>Compilato da</div>
               <input value={compiledBy} onChange={(e) => setCompiledBy(e.target.value)} style={{ ...ui.input.base, marginTop: 6 }} placeholder="Nome e cognome" />
